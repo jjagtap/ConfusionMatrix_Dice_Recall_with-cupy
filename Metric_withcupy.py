@@ -13,7 +13,6 @@ from sklearn import metrics
 from skimage import morphology
 os.environ["CUDA_VISIBLE_DEVICES"]='0'
 #Edit the following two...
-import shutil
 os.environ["OPENCV_IO_MAX_IMAGE_PIXELS"] = str(pow(2,40))
 import cv2
 import cupy as cp
@@ -27,11 +26,6 @@ Metric_output =r"/SAVE_CALCULATED_METRIC/"
    
 if not os.path.exists(Metric_output):
     os.makedirs(Metric_output)
-
-check_images=Metric_output+'checkfiles'+os.sep
-if not os.path.exists(check_images):
-    os.mkdir(check_images)  
-
 
 
 oriprefix = '_glomtuftmaskGT.png' #'_NIFTI.nii.gz'
