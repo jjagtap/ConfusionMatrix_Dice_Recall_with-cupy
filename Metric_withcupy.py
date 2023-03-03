@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Mar  2 15:39:20 2023
-
-@author: m235103
+THIS CODE USES CUPY AND MATRIX MULTIPLICATION FOR CALCULATING DICE, CONFUSION MATRIX. SCIKITLEARN CONFUSION MATRIX COULD TAKE 4-5HRS WHERE THIS CAN BE DONE IN 2-3 MIN WITH THIS CODE.
+@author: JAIDIP JAGTAP
 """
 
 import os
@@ -19,10 +19,10 @@ import cv2
 import cupy as cp
 
 
-segmask_folder='/research/projects/Jaidip/Work_Data/Dr_Rule_project_KidneyPathology/Nephrectomy_donor_data/Nephrectomy_split/Train_Val_Test_Data/Data20x/Analysis/GroundTruth/glomtuft_mask_InCortex_Use/' #Output/Subset_10/Corrected/
-predmask_folder='/research/projects/Jaidip/Work_Data/Dr_Rule_project_KidneyPathology/Nephrectomy_donor_data/Nephrectomy_split/Train_Val_Test_Data/Data20x/Analysis/Output/glomtuft_Testset0123all_corrected20pix/'
+segmask_folder='/GROUNDTRUTH_MASKFOLDER/' 
+predmask_folder='/PREDICTED_MASKFOLDER/'
 
-Metric_output =r"/research/projects/Jaidip/Work_Data/Dr_Rule_project_KidneyPathology/Nephrectomy_donor_data/Nephrectomy_split/Train_Val_Test_Data/Data20x/Analysis/Output/Dice_Metric/correct20pix_noArm/"
+Metric_output =r"/SAVE_CALCULATED_METRIC/"
 
    
 if not os.path.exists(Metric_output):
@@ -64,7 +64,7 @@ for filename in tqdm(files):
         true_label = cv2.imread(segmask_folder+filename, cv2.COLOR_BGR2GRAY)            
         pred_mask = cv2.imread(pred_fname, cv2.COLOR_BGR2GRAY) #[:strremove]+'_Seg_crop20k.nii.gz'#processed1   _predseg       
         
-        user_input = 'no'#input("Do you want to rremove small area? (yes) ")
+        user_input = 'no'#input("Do you want to remove small area/false positives? (yes) ")
         if user_input.lower() == "yes":
             img_out=pred_mask.astype('uint8')
             er1=img_out>0 # boolean input needed
@@ -105,11 +105,8 @@ for filename in tqdm(files):
                
         # Save metrics and confusion matrix to NumPy file
         
-        if dice<0.4:
-            np.savez(check_images+pre+segprefix, dice=dice, accuracy=accuracy, precision=precision, recall=recall, true_positive_rate=true_positive_rate, false_negative_rate=false_negative_rate, confusion_matrix=confusion_matrix)
-        else:
-            np.savez(Metric_output+pre+segprefix, dice=dice, accuracy=accuracy, precision=precision, recall=recall, true_positive_rate=true_positive_rate, false_negative_rate=false_negative_rate, confusion_matrix=confusion_matrix)
-            # shutil.move(Metric_output+pre+segprefix+'.npz', check_images) #    + 'testmatrics/' 
+        np.savez(Metric_output+pre+segprefix, dice=dice, accuracy=accuracy, precision=precision, recall=recall, true_positive_rate=true_positive_rate, false_negative_rate=false_negative_rate, confusion_matrix=confusion_matrix)
+        
 
         '''
         # Move metrics back to CPU
