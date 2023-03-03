@@ -3,7 +3,8 @@
 """
 Created on Thu Mar  2 16:36:28 2023
 
-@author: m235103
+@author: Jaidip Jagtap
+This code is to take average of all metric parameters once you have all metric parameters calculated.
 """
 
 import numpy as np
@@ -11,8 +12,9 @@ import os
 import math
 import shutil
 # Define folder path
-folder_path = '/research/projects/Jaidip/Work_Data/Dr_Rule_project_KidneyPathology/Nephrectomy_donor_data/Nephrectomy_split/Train_Val_Test_Data/Data20x/Analysis/Output/Dice_Metric/Raw_noArm/'
+folder_path = 'METRIC_FOLDER.../'
 
+# IF TROUBLE IN SOME FILE WITH dICE SCORE, MOVE THEM TO NEW FOLDER
 check_images=folder_path+'checkfiles'+os.sep
 if not os.path.exists(check_images):
     os.mkdir(check_images)           
